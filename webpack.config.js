@@ -4,175 +4,77 @@ const autoprefixer = require('autoprefixer');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const isDev = !process.argv[2];
 
+console.log(isDev);
 
-const HEAD_SCRIPTS = env => {
-  return {
-    mode: env === 'build' ? 'production' : 'development',
-    entry: theme + './DOM/index.js',
-    output: {
-      path: path.resolve(theme, 'js'),
-      filename: 'head.min.js'
-    },
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              cacheDirectory: true,
-              presets: ['@babel/preset-env', '@babel/preset-react'],
-              plugins: ['@babel/plugin-transform-shorthand-properties']
-            }
-          }
-        },
-        {
-          test: /\.less$/,
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  url: false,
-                  sourceMap: true
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  plugins: [autoprefixer({ grid: true })],
-                  sourceMap: true
-                }
-              },
-              {
-                loader: 'less-loader',
-                options: {
-                  sourceMap: true
-                }
-              }
-            ]
-          })
-        },
-
-        {
-          test: /\.(woff|woff2|eot|ttf|svg|otf|png)$/,
-          loader: 'file-loader',
+module.exports = {
+  mode: !isDev ? 'production' : 'development',
+  entry: './example/index.js',
+  output: {
+    path: path.resolve(__dirname, 'example/js'),
+    filename: 'main.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
           options: {
-            name: '../[path][name].[ext]',
-            context: theme + '/'
+            cacheDirectory: true,
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: ['@babel/plugin-transform-shorthand-properties']
           }
         }
-      ]
-    },
-    plugins: [
-
-      new ExtractTextPlugin({
-        filename: '../css/head.min.css'
-      }),
-      env === 'build' ?
-        new OptimizeCssAssetsPlugin({
-          cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }],
-          },
-          canPrint: true
-        }) : { apply: () => { } }
-    ],
-    devtool: env === 'build' ? false : 'source-map',
-    watch: !(env === 'build')
-  }
-};
-
-
-
-
-const SCRIPTS = env => {
-  return {
-    mode: env === 'build' ? 'production' : 'development',
-    entry: theme + '/js/dev/index.js',
-    output: {
-      path: path.resolve(theme, 'js'),
-      filename: 'main.min.js'
-    },
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              cacheDirectory: true,
-              presets: ['@babel/preset-env', '@babel/preset-react'],
-              plugins: ['@babel/plugin-transform-shorthand-properties']
-            }
-          }
-        },
-        {
-          test: /\.(less|css)$/,
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  url: false,
-                  sourceMap: true
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  plugins: [autoprefixer({ grid: true })],
-                  sourceMap: true
-                }
-              },
-              {
-                loader: 'less-loader',
-                options: {
-                  sourceMap: true
-                }
+      },
+      {
+        test: /\.(less|css)$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                url: true,
+                sourceMap: false
               }
-            ]
-          })
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: [autoprefixer({ grid: true })],
+                sourceMap: isDev
+              }
+            },
+            {
+              loader: 'less-loader',
+              options: {
+                sourceMap: isDev
+              }
+            }
+          ]
+        })
+      }
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new ExtractTextPlugin({
+      filename: '../css/main.css'
+    }),
+    !isDev ?
+      new OptimizeCssAssetsPlugin({
+        cssProcessorPluginOptions: {
+          preset: ['default', { discardComments: { removeAll: true } }],
         },
-        // {
-        //   test: /\.css$/i,
-        //   use: [MiniCssExtractPlugin.loader, 'css-loader']
-        // },
-        {
-          test: /\.(woff|woff2|eot|ttf|svg|otf|png)$/,
-          loader: 'file-loader',
-          options: {
-            name: '../[path][name].[ext]',
-            context: theme + '/'
-          }
-        }
-      ]
-    },
-    plugins: [
-      new MiniCssExtractPlugin(),
-      new ExtractTextPlugin({
-        filename: '../css/main.min.css'
-      }),
-      env === 'build' ?
-        new OptimizeCssAssetsPlugin({
-          cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }],
-          },
-          canPrint: true
-        }) : { apply: () => { } }
-    ],
-    devtool: env === 'build' ? false : 'source-map',
-    watch: !(env === 'build')
-  }
-
+        canPrint: true
+      }) : { apply: () => { } }
+  ],
+  devtool: !isDev ? false : 'source-map',
+  watch: isDev
 };
-
-
-module.exports = [HEAD_SCRIPTS, SCRIPTS];
 
 
 
