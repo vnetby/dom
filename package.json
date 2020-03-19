@@ -1,0 +1,58 @@
+{
+  "name": "vnet-dom",
+  "version": "1.0.0",
+  "description": "js helper",
+  "main": "index.js",
+  "scripts": {
+    "webpack-dev": "webpack",
+    "webpack-build": "webpack --env=build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vnetby/dom.git"
+  },
+  "keywords": [
+    "dom",
+    "vnetby"
+  ],
+  "author": "vadzim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vnetby/dom/issues"
+  },
+  "homepage": "https://github.com/vnetby/dom#readme",
+  "dependencies": {
+    "detect-browser": "^4.7.0",
+    "mobile-device-detect": "^0.3.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/polyfill": "^7.6.0",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@babel/register": "^7.6.2",
+    "autoprefixer": "^9.6.5",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelrc-rollup": "^3.0.0",
+    "browser-sync": "^2.26.7",
+    "css-loader": "^3.2.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^4.2.0",
+    "fs": "0.0.1-security",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.8.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^1.0.0",
+    "url-loader": "^2.2.0",
+    "webpack": "^4.41.1",
+    "webpack-cli": "^3.3.9",
+    "webpack-stream": "^5.2.1"
+  }
+}
