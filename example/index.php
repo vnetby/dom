@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VNETBY - DOM</title>
-    <link rel="stylesheet" href="css/main.css" />
-  </head>
-  <body>
-    <script src="js/main.js"></script>
-  </body>
-</html>
+<?php
+require(__DIR__ . '/bootstrap.php');
+
+echo $twig->render('header.twig');
+
+echo $twig->render('home.twig');
+
+echo $twig->render('footer.twig');
